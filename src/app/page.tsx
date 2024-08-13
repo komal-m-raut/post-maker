@@ -1,4 +1,5 @@
+import Builder from "@/components/builder/Builder";
 
-export default function Home() {
-  return <div>Page</div>;
-}
+const Home = () => <Builder />;
+
+export default Home;
