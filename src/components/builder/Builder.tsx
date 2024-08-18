@@ -4,19 +4,15 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 
 const Builder = () => {
-  const buttonLabels = ["Title", "Description", "Code", "Username"];
-  const [selectedFields, setSelectedFields] = useState<string[]>([]);
-  const [content, setContent] = useState<{ [key: string]: { value: string; style: React.CSSProperties } }>({});
-
-  const handleButtonClick = (label: string) => {
-    if (!selectedFields.includes(label)) {
-      setSelectedFields([...selectedFields, label]);
-      setContent((prevContent) => ({
-        ...prevContent,
-        [label.toLowerCase()]: { value: "", style: {} },
-      }));
-    }
-  };
+  const [content, setContent] = useState<{
+    [key: string]: { value: string; style: React.CSSProperties };
+  }>({
+    title: { value: "", style: { fontSize: "24px", fontWeight: "bold" } },
+    description: { value: "", style: { fontSize: "16px" } },
+    username: { value: "", style: { fontSize: "16px" } },
+  });
+  const [backgroundImage, setBackgroundImage] = useState<string>("");
+  const [activeTab, setActiveTab] = useState<string>("title");
 
   const handleInputChange = (field: string, value: string) => {
     setContent((prevContent) => ({
@@ -25,15 +21,18 @@ const Builder = () => {
     }));
   };
 
-  const handleStyleChange = (field: string, style: React.CSSProperties) => {
+  const handleStyleChange = (style: React.CSSProperties) => {
     setContent((prevContent) => ({
       ...prevContent,
-      [field]: { ...prevContent[field], style: { ...prevContent[field].style, ...style } },
+      [activeTab]: {
+        ...prevContent[activeTab],
+        style: { ...prevContent[activeTab].style, ...style },
+      },
     }));
   };
 
   const jsonObject = {
-    backgroundImage: "https://example.com/image.jpg",
+    backgroundImage,
     content: Object.keys(content).map((key) => ({
       type: key,
       value: content[key].value,
@@ -41,74 +40,69 @@ const Builder = () => {
     })),
   };
 
+  const renderStyleButtons = () => (
+        <div className="flex gap-2 mt-2">
+      <div className="flex flex-col">
+        <label className="block text-gray-700 mb-1">Select Color</label>
+        <input
+          type="color"
+          onChange={(e) => handleStyleChange({ color: e.target.value })}
+          className="border rounded py-1 px-2"
+        />
+      </div>
+      <div className="flex flex-col w-2/3">
+        <label className="block text-gray-700 mb-1">Select Background Image</label>
+        <Input
+          type="text"
+          className="border rounded py-2 px-4"
+          placeholder="Enter background image URL"
+          value={backgroundImage}
+          onChange={(e) => setBackgroundImage(e.target.value)}
+        />
+      </div>
+    </div>
+  );
+
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="bg-slate-50 p-4 m-4 w-1/3 h-auto shadow-lg">
-        <h1 className="text-center mb-4">Select fields</h1>
-        <div className="flex gap-2">
-          {buttonLabels.map((label) => (
+        <h1 className="text-center mb-4">Styles</h1>
+        {renderStyleButtons()}
+        <h1 className="text-center mb-4 mt-4">Enter Details</h1>
+        <div className="flex gap-2 mb-4">
+          {["title", "description", "username"].map((tab) => (
             <Button
-              key={label}
-              className="bg-blue-500 text-white py-2 px-4 rounded"
-              onClick={() => handleButtonClick(label)}
+              key={tab}
+              className={`py-2 px-4 rounded ${
+                activeTab === tab
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-gray-700"
+              }`}
+              onClick={() => setActiveTab(tab)}
             >
-              {label}
+              {tab.charAt(0).toUpperCase() + tab.slice(1)}
             </Button>
           ))}
         </div>
-        <div className="mt-4">
-          {selectedFields.map((field) => (
-            <div key={field} className="mb-2">
-              <label className="block text-gray-700 mb-2">{field}</label>
-              <Input
-                type="text"
-                name={field.toLowerCase()}
-                className="border rounded py-2 px-4 w-full"
-                placeholder={`Enter ${field.toLowerCase()}`}
-                value={content[field.toLowerCase()]?.value || ""}
-                onChange={(e) => handleInputChange(field.toLowerCase(), e.target.value)}
-                style={content[field.toLowerCase()]?.style}
-              />
-              <div className="flex gap-2 mt-2">
-                <Button
-                  className="bg-gray-500 text-white py-1 px-2 rounded"
-                  onClick={() => handleStyleChange(field.toLowerCase(), { fontWeight: content[field.toLowerCase()]?.style?.fontWeight === 'bold' ? 'normal' : 'bold' })}
-                >
-                  Bold
-                </Button>
-                <Button
-                  className="bg-gray-500 text-white py-1 px-2 rounded"
-                  onClick={() => handleStyleChange(field.toLowerCase(), { fontStyle: content[field.toLowerCase()]?.style?.fontStyle === 'italic' ? 'normal' : 'italic' })}
-                >
-                  Italic
-                </Button>
-                <Button
-                  className="bg-gray-500 text-white py-1 px-2 rounded"
-                  onClick={() => handleStyleChange(field.toLowerCase(), { textDecoration: content[field.toLowerCase()]?.style?.textDecoration === 'underline' ? 'none' : 'underline' })}
-                >
-                  Underline
-                </Button>
-                <input
-                  type="color"
-                  onChange={(e) => handleStyleChange(field.toLowerCase(), { color: e.target.value })}
-                  className="border rounded py-1 px-2"
-                />
-                <input
-                  type="number"
-                  placeholder="Font Size"
-                  onChange={(e) => handleStyleChange(field.toLowerCase(), { fontSize: `${e.target.value}px` })}
-                  className="border rounded py-1 px-2"
-                />
-              </div>
-            </div>
-          ))}
+        <div>
+          <label className="block text-gray-700 mb-2">
+            {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
+          </label>
+          <Input
+            type="text"
+            name={activeTab}
+            className="border rounded py-2 px-4 w-full"
+            placeholder={`Enter ${activeTab}`}
+            value={content[activeTab]?.value || ""}
+            onChange={(e) => handleInputChange(activeTab, e.target.value)}
+          />
         </div>
       </div>
-      <div className="bg-slate-50 p-4 m-4 w-1/3 h-auto shadow-lg">
+      <div
+        className="bg-slate-50 p-4 m-4 w-1/3 h-auto shadow-lg"
+        style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+      >
         <h1 className="text-center mb-4">Box 2</h1>
-        <pre className="bg-gray-100 p-4 rounded">
-          {JSON.stringify(jsonObject, null, 2)}
-        </pre>
         <div className="mt-4">
           {jsonObject.content.map((item, index) => (
             <div key={index} style={item.style}>
