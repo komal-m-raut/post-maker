@@ -1,9 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import { Renderer } from "./Renderer";
 import { IField } from "@/types/builder";
 import { Button } from "@/components/ui/button";
-import { Field } from "./Field";
+import Field  from "./Field";
+import Renderer from "./Renderer";
 
 const Builder = () => {
   const [fields, setFields] = useState<IField[]>([]);
@@ -42,7 +42,7 @@ const Builder = () => {
             Add block
           </Button>
         </div>
-        {fields.map((field, index) => (
+        {fields?.map((field, index) => (
           <div key={index} className="mt-4">
             <Field
               {...field}

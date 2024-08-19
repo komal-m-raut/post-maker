@@ -1,7 +1,7 @@
 import { IField } from "@/types/builder";
 import React from "react";
 
-export const Renderer: React.FC<{ fields: IField[] }> = ({ fields }) => {
+const Renderer: React.FC<{ fields: IField[] }> = ({ fields }) => {
   return (
     <div className="bg-slate-50 p-4 m-4 w-1/3 h-auto shadow-lg">
       <h1 className="text-center mb-4">Box 2</h1>
@@ -9,7 +9,7 @@ export const Renderer: React.FC<{ fields: IField[] }> = ({ fields }) => {
         {JSON.stringify(fields, null, 2)}
       </pre>
       <div className="mt-4">
-        {fields.map((field, index) => (
+        {fields?.map((field, index) => (
           <div key={index} className="mb-4">
             <div
               style={{
@@ -26,3 +26,5 @@ export const Renderer: React.FC<{ fields: IField[] }> = ({ fields }) => {
     </div>
   );
 };
+
+export default Renderer;

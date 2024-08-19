@@ -65,7 +65,7 @@ const getBlock = (
   }
 };
 
-export const Field: React.FC<
+const Field: React.FC<
   IField & { updateField: (field: IField) => void }
 > = ({ type, content, style, updateField }) => {
   const [fieldType, setFieldType] = React.useState(type);
@@ -87,3 +87,5 @@ export const Field: React.FC<
     </div>
   );
 };
+
+export default Field;

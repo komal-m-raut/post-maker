@@ -5,12 +5,13 @@ export const metadata = {
   description: "A simple builder",
   authors: [
     {
-      name: "Komal Vedavrat Patwardhan",
+      name: "Komal Raut",
       url: "https://github.com/komal-m-raut",
     },
   ],
-  viewport: "width=device-width, initial-scale=1",
 };
+
+export const viewport = "width=device-width, initial-scale=1";
 
 const IndexPage = () => <Builder />;
 
