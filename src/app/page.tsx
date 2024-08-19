@@ -1,5 +1,17 @@
-import Builder from "@/components/builder/Builder";
+import Builder from "@/pages/builder/builder";
 
-const Home = () => <Builder />;
+export const metadata = {
+  title: "Builder",
+  description: "A simple builder",
+  authors: [
+    {
+      name: "Komal Vedavrat Patwardhan",
+      url: "https://github.com/komal-m-raut",
+    },
+  ],
+  viewport: "width=device-width, initial-scale=1",
+};
 
-export default Home;
+const IndexPage = () => <Builder />;
+
+export default IndexPage;
