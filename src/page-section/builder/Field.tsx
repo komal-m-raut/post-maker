@@ -6,6 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { IField } from "@/types/builder";
 import { contentBlocks } from "@/util/constants";
 import React from "react";
@@ -42,7 +43,20 @@ const getBlock = (
       return (
         <div>
           <h2>Description</h2>
-          <Input type="text" className="" />
+          <Textarea
+            className=""
+            onChange={(e) => {
+              updateField({
+                type: "description",
+                content: e.target.value,
+                style: {
+                  fontSize: "14px",
+                  fontWeight: "normal",
+                  color: "#000",
+                },
+              });
+            }}
+          />
           {/* Add style section here */}
         </div>
       );
@@ -50,14 +64,41 @@ const getBlock = (
       return (
         <div>
           <h2>Title</h2>
-          <Input type="text" className="" />
+          <Textarea
+            className=""
+            onChange={(e) => {
+              updateField({
+                type: "code",
+                content: e.target.value,
+                style: {
+                  fontSize: "14px",
+                  fontWeight: "normal",
+                  color: "#000",
+                },
+              });
+            }}
+          />
         </div>
       );
     case "username":
       return (
         <div>
           <h2>Title</h2>
-          <Input type="text" className="" />
+          <Input
+            type="text"
+            className=""
+            onChange={(e) => {
+              updateField({
+                type: "username",
+                content: e.target.value,
+                style: {
+                  fontSize: "14px",
+                  fontWeight: "normal",
+                  color: "#000",
+                },
+              });
+            }}
+          />
         </div>
       );
     default:
@@ -65,9 +106,12 @@ const getBlock = (
   }
 };
 
-export const Field: React.FC<
-  IField & { updateField: (field: IField) => void }
-> = ({ type, content, style, updateField }) => {
+const Field: React.FC<IField & { updateField: (field: IField) => void }> = ({
+  type,
+  content,
+  style,
+  updateField,
+}) => {
   const [fieldType, setFieldType] = React.useState(type);
   return (
     <div>
@@ -81,9 +125,12 @@ export const Field: React.FC<
               {block.label}
             </SelectItem>
           ))}
+          
         </SelectContent>
       </Select>
       {getBlock(fieldType, updateField)}
     </div>
   );
 };
+
+export default Field;
