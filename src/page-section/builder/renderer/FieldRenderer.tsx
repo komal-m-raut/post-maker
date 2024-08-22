@@ -5,54 +5,43 @@ const RenderField: React.FC<{ field: IField; type: IField["type"] }> = ({
   field,
   type,
 }) => {
+  const commonStyles = {
+    fontSize: field.style.fontSize,
+    fontWeight: field.style.fontWeight,
+    color: field.style.color,
+  };
+
   switch (type) {
-    case "description":
-      return (
-        <div
-          style={{
-            fontSize: field.style.fontSize,
-            fontWeight: field.style.fontWeight,
-            color: field.style.color,
-          }}
-        >
-          {field.content}
-        </div>
-      );
     case "title":
       return (
-        <h1
-          style={{
-            fontSize: field.style.fontSize,
-            fontWeight: field.style.fontWeight,
-            color: field.style.color,
-          }}
-        >
+        <h1 className="text-3xl font-bold text-center" style={commonStyles}>
           {field.content}
         </h1>
       );
+    case "description":
+      return (
+        <p className="leading-relaxed text-center" style={commonStyles}>
+          {field.content}
+        </p>
+      );
     case "username":
       return (
-        <div
-          style={{
-            fontSize: field.style.fontSize,
-            fontWeight: field.style.fontWeight,
-            color: field.style.color,
-          }}
-        >
+        <div className="italic text-gray-600" style={commonStyles}>
           {field.content}
         </div>
       );
     case "code":
       return (
-        <code
+        <pre
+          className="bg-blue-100 p-4 w-3/4 rounded-lg shadow-inner text-left"
           style={{
-            fontSize: field.style.fontSize,
-            fontWeight: field.style.fontWeight,
-            color: field.style.color,
+            ...commonStyles,
+            whiteSpace: "pre-wrap",
+            wordBreak: "break-all",
           }}
         >
-          {field.content}
-        </code>
+          <code>{field.content}</code>
+        </pre>
       );
     default:
       return null;
@@ -60,5 +49,9 @@ const RenderField: React.FC<{ field: IField; type: IField["type"] }> = ({
 };
 
 export const FieldRenderer: React.FC<{ field: IField }> = ({ field }) => {
-  return RenderField({ field, type: field.type });
+  return (
+    <div className="max-w-lg mx-auto mb-6 flex flex-col items-center space-y-4">
+      {RenderField({ field, type: field.type })}
+    </div>
+  );
 };

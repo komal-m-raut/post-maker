@@ -18,11 +18,11 @@ const getBlock = (
   switch (type) {
     case "title":
       return (
-        <div>
-          <h2>Title</h2>
+        <div className="mb-4">
           <Input
             type="text"
-            className=""
+            placeholder="Enter title"
+            className="w-full p-2 border border-gray-300 rounded"
             onChange={(e) => {
               updateField({
                 type: "title",
@@ -35,16 +35,15 @@ const getBlock = (
               });
             }}
           />
-          {/* Add style section here */}
         </div>
       );
 
     case "description":
       return (
-        <div>
-          <h2>Description</h2>
+        <div className="mb-4">
           <Textarea
-            className=""
+            placeholder="Enter description"
+            className="w-full p-2 border border-gray-300 rounded"
             onChange={(e) => {
               updateField({
                 type: "description",
@@ -57,15 +56,14 @@ const getBlock = (
               });
             }}
           />
-          {/* Add style section here */}
         </div>
       );
     case "code":
       return (
-        <div>
-          <h2>Title</h2>
+        <div className="mb-4">
           <Textarea
-            className=""
+            placeholder="Enter code"
+            className="w-full p-2 border border-gray-300 rounded"
             onChange={(e) => {
               updateField({
                 type: "code",
@@ -82,11 +80,11 @@ const getBlock = (
       );
     case "username":
       return (
-        <div>
-          <h2>Title</h2>
+        <div className="mb-4">
           <Input
             type="text"
-            className=""
+            placeholder="Enter username"
+            className="w-full p-2 border border-gray-300 rounded"
             onChange={(e) => {
               updateField({
                 type: "username",
@@ -114,9 +112,9 @@ const Field: React.FC<IField & { updateField: (field: IField) => void }> = ({
 }) => {
   const [fieldType, setFieldType] = React.useState(type);
   return (
-    <div>
+    <div className="p-4 border border-gray-300 rounded">
       <Select onValueChange={(type: IField["type"]) => setFieldType(type)}>
-        <SelectTrigger className="min-w-[180px]">
+        <SelectTrigger className="min-w-[180px] mb-4">
           <SelectValue placeholder="Select block" />
         </SelectTrigger>
         <SelectContent>
@@ -125,7 +123,6 @@ const Field: React.FC<IField & { updateField: (field: IField) => void }> = ({
               {block.label}
             </SelectItem>
           ))}
-          
         </SelectContent>
       </Select>
       {getBlock(fieldType, updateField)}
