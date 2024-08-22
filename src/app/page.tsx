@@ -1,4 +1,4 @@
-import Builder from "@/pages/builder/builder";
+import Builder from "@/page-section/builder/builder";
 
 export const metadata = {
   title: "Builder",
@@ -9,9 +9,8 @@ export const metadata = {
       url: "https://github.com/komal-m-raut",
     },
   ],
-  viewport: "width=device-width, initial-scale=1",
 };
-
+export const viewport = "width=device-width, initial-scale=1";
 const IndexPage = () => <Builder />;
 
 export default IndexPage;
