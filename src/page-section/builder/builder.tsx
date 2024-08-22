@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import { IField } from "@/types/builder";
 import { Button } from "@/components/ui/button";
-import  Field  from "./Field";
-import { Renderer } from "./renderer/rendrer";
+import { Field } from "./Field";
+import { Renderer } from "./renderer/Renderer";
 
 const Builder = () => {
   const [fields, setFields] = useState<IField[]>([]);
