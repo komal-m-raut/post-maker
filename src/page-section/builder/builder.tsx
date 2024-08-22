@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Renderer } from "./Renderer";
 import { IField } from "@/types/builder";
 import { Button } from "@/components/ui/button";
-import { Field } from "./Field";
+import  Field  from "./Field";
 
 const Builder = () => {
   const [fields, setFields] = useState<IField[]>([]);
