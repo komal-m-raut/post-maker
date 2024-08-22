@@ -1,9 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import { Renderer } from "./Renderer";
 import { IField } from "@/types/builder";
 import { Button } from "@/components/ui/button";
 import { Field } from "./Field";
+import { Renderer } from "./renderer/rendrer";
 
 const Builder = () => {
   const [fields, setFields] = useState<IField[]>([]);
