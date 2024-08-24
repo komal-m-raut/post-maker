@@ -20,9 +20,32 @@ const RenderField: React.FC<{ field: IField; type: IField["type"] }> = ({
         </h1>
       );
     case "description":
-      return <p className="leading-relaxed text-center">{field.content}</p>;
+      return (
+        <p
+          style={{
+            fontSize: field.style.fontSize + "px" ?? "1rem",
+            fontWeight: field.style.fontWeight ?? "normal",
+            color: field.style.color ?? "#000",
+            textAlign: field.style.alignment ?? "left",
+          }}
+        >
+          {field.content}
+        </p>
+      );
     case "username":
-      return <div className="italic text-end">{field.content}</div>;
+      return (
+        <div
+          className="italic"
+          style={{
+            fontSize: field.style.fontSize + "px" ?? "1rem",
+            fontWeight: field.style.fontWeight ?? "bold",
+            color: field.style.color ?? "#000",
+            textAlign: field.style.alignment ?? "left",
+          }}
+        >
+          {field.content}
+        </div>
+      );
     case "code":
       return (
         <div className="bg-[#001524] p-4 rounded-lg shadow-inner text-left text-white">

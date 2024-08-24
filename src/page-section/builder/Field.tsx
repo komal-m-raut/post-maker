@@ -10,7 +10,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { IField } from "@/types/builder";
 import { contentBlocks } from "@/util/constants";
 import React, { useState } from "react";
-import { FontSizeSlider, FontWeightSlider } from "./StyleControllers";
+import {
+  AlignmentButtons,
+  ColorPicker,
+  FontSizeSlider,
+  FontWeightSlider,
+} from "./StyleControllers";
 
 type StyleType = "fontSize" | "fontWeight" | "color" | "alignment";
 
@@ -28,6 +33,11 @@ const getStyleBlock = (
             return <FontSizeSlider updateStyle={styleOption.updateStyle} />;
           case "fontWeight":
             return <FontWeightSlider updateStyle={styleOption.updateStyle} />;
+          case "color":
+            return <ColorPicker updateStyle={styleOption.updateStyle} />;
+          case "alignment":
+            return <AlignmentButtons updateStyle={styleOption.updateStyle} />;
+
           default:
             return null;
         }
@@ -93,14 +103,32 @@ const getBlock = (
               updateField({
                 type: "description",
                 content: e.target.value,
-                style: {
-                  fontSize: "14px",
-                  fontWeight: "normal",
-                  color: "#000",
-                },
+                style: customStyles,
               });
             }}
           />
+          {getStyleBlock([
+            {
+              styleType: "fontSize",
+              updateStyle: (value) =>
+                updateStyleState("fontSize", value as number),
+            },
+            {
+              styleType: "fontWeight",
+              updateStyle: (value) =>
+                updateStyleState("fontWeight", value as number),
+            },
+            {
+              styleType: "color",
+              updateStyle: (value) =>
+                updateStyleState("color", value as string),
+            },
+            {
+              styleType: "alignment",
+              updateStyle: (value) =>
+                updateStyleState("alignment", value as StyleType),
+            },
+          ])}
         </div>
       );
     case "code":
@@ -113,11 +141,7 @@ const getBlock = (
               updateField({
                 type: "code",
                 content: e.target.value,
-                style: {
-                  fontSize: "14px",
-                  fontWeight: "normal",
-                  color: "#000",
-                },
+                style: customStyles,
               });
             }}
           />
@@ -134,14 +158,32 @@ const getBlock = (
               updateField({
                 type: "username",
                 content: e.target.value,
-                style: {
-                  fontSize: "14px",
-                  fontWeight: "normal",
-                  color: "#000",
-                },
+                style: customStyles,
               });
             }}
           />
+          {getStyleBlock([
+            {
+              styleType: "fontSize",
+              updateStyle: (value) =>
+                updateStyleState("fontSize", value as number),
+            },
+            {
+              styleType: "fontWeight",
+              updateStyle: (value) =>
+                updateStyleState("fontWeight", value as number),
+            },
+            {
+              styleType: "color",
+              updateStyle: (value) =>
+                updateStyleState("color", value as string),
+            },
+            {
+              styleType: "alignment",
+              updateStyle: (value) =>
+                updateStyleState("alignment", value as StyleType),
+            },
+          ])}
         </div>
       );
     default:
