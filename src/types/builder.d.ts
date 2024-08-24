@@ -5,6 +5,7 @@ export interface IField {
     fontSize: React.CSSProperties["fontSize"];
     fontWeight: React.CSSProperties["fontWeight"];
     color: React.CSSProperties["color"];
+    alignment?: "left" | "center" | "right";
   };
 }
 

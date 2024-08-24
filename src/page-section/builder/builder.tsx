@@ -1,9 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import { Renderer } from "./Renderer";
 import { IField } from "@/types/builder";
 import { Button } from "@/components/ui/button";
-import  Field  from "./Field";
+import { Renderer } from "./renderer/Renderer";
+import Field from "./Field";
 
 const Builder = () => {
   const [fields, setFields] = useState<IField[]>([]);
@@ -31,9 +31,10 @@ const Builder = () => {
                   type: "description",
                   content: "Hello world",
                   style: {
-                    fontSize: "16px",
-                    fontWeight: "normal",
-                    color: "#000",
+                    fontSize: undefined,
+                    fontWeight: undefined,
+                    color: undefined,
+                    alignment: "left",
                   },
                 },
               ])

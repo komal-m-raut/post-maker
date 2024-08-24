@@ -9,42 +9,86 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { IField } from "@/types/builder";
 import { contentBlocks } from "@/util/constants";
-import React from "react";
+import React, { useState } from "react";
+import { FontSizeSlider, FontWeightSlider } from "./StyleControllers";
+
+type StyleType = "fontSize" | "fontWeight" | "color" | "alignment";
+
+const getStyleBlock = (
+  styleOptions: {
+    styleType: "fontSize" | "fontWeight" | "color" | "alignment";
+    updateStyle: (value: string | number) => void;
+  }[]
+) => {
+  return (
+    <div className="my-4 flex flex-col gap-y-4">
+      {styleOptions.map((styleOption) => {
+        switch (styleOption.styleType) {
+          case "fontSize":
+            return <FontSizeSlider updateStyle={styleOption.updateStyle} />;
+          case "fontWeight":
+            return <FontWeightSlider updateStyle={styleOption.updateStyle} />;
+          default:
+            return null;
+        }
+      })}
+    </div>
+  );
+};
 
 const getBlock = (
   type: IField["type"],
-  updateField: (field: IField) => void
+  updateField: (field: IField) => void,
+  updateStyleState: (styleType: StyleType, value: string | number) => void,
+  customStyles: IField["style"]
 ) => {
   switch (type) {
     case "title":
       return (
-        <div>
-          <h2>Title</h2>
+        <div className="mb-4">
           <Input
             type="text"
-            className=""
+            placeholder="Enter title"
+            className="w-full p-2 border border-gray-300 rounded"
             onChange={(e) => {
               updateField({
                 type: "title",
                 content: e.target.value,
-                style: {
-                  fontSize: "16px",
-                  fontWeight: "bold",
-                  color: "#000",
-                },
+                style: customStyles,
               });
             }}
           />
-          {/* Add style section here */}
+          {getStyleBlock([
+            {
+              styleType: "fontSize",
+              updateStyle: (value) =>
+                updateStyleState("fontSize", value as number),
+            },
+            {
+              styleType: "fontWeight",
+              updateStyle: (value) =>
+                updateStyleState("fontWeight", value as number),
+            },
+            {
+              styleType: "color",
+              updateStyle: (value) =>
+                updateStyleState("color", value as string),
+            },
+            {
+              styleType: "alignment",
+              updateStyle: (value) =>
+                updateStyleState("alignment", value as StyleType),
+            },
+          ])}
         </div>
       );
 
     case "description":
       return (
-        <div>
-          <h2>Description</h2>
+        <div className="mb-4">
           <Textarea
-            className=""
+            placeholder="Enter description"
+            className="w-full p-2 border border-gray-300 rounded"
             onChange={(e) => {
               updateField({
                 type: "description",
@@ -57,15 +101,14 @@ const getBlock = (
               });
             }}
           />
-          {/* Add style section here */}
         </div>
       );
     case "code":
       return (
-        <div>
-          <h2>Title</h2>
+        <div className="mb-4">
           <Textarea
-            className=""
+            placeholder="Enter code"
+            className="w-full p-2 border border-gray-300 rounded"
             onChange={(e) => {
               updateField({
                 type: "code",
@@ -82,11 +125,11 @@ const getBlock = (
       );
     case "username":
       return (
-        <div>
-          <h2>Title</h2>
+        <div className="mb-4">
           <Input
             type="text"
-            className=""
+            placeholder="Enter username"
+            className="w-full p-2 border border-gray-300 rounded"
             onChange={(e) => {
               updateField({
                 type: "username",
@@ -107,16 +150,24 @@ const getBlock = (
 };
 
 const Field: React.FC<IField & { updateField: (field: IField) => void }> = ({
-  type,
-  content,
   style,
+  content,
+  type,
   updateField,
 }) => {
-  const [fieldType, setFieldType] = React.useState(type);
+  const [fieldType, setFieldType] = useState(type);
+  const updateStyleState = (styleType: StyleType, value: string | number) => {
+    updateField({
+      type: fieldType,
+      content,
+      style: { ...style, [styleType]: value },
+    });
+  };
+
   return (
-    <div>
+    <div className="p-4 border border-gray-300 rounded">
       <Select onValueChange={(type: IField["type"]) => setFieldType(type)}>
-        <SelectTrigger className="min-w-[180px]">
+        <SelectTrigger className="min-w-[180px] mb-4">
           <SelectValue placeholder="Select block" />
         </SelectTrigger>
         <SelectContent>
@@ -125,10 +176,9 @@ const Field: React.FC<IField & { updateField: (field: IField) => void }> = ({
               {block.label}
             </SelectItem>
           ))}
-          
         </SelectContent>
       </Select>
-      {getBlock(fieldType, updateField)}
+      {getBlock(fieldType, updateField, updateStyleState, style)}
     </div>
   );
 };
