@@ -5,27 +5,24 @@ const RenderField: React.FC<{ field: IField; type: IField["type"] }> = ({
   field,
   type,
 }) => {
-  const commonStyles = {
-    fontSize: field.style.fontSize,
-    fontWeight: field.style.fontWeight,
-    color: field.style.color,
-  };
-
   switch (type) {
     case "title":
-      return <h1 className="text-2xl text-center">{field.content}</h1>;
+      return (
+        <h1
+          style={{
+            fontSize: field.style.fontSize + "px" ?? "1.5rem",
+            fontWeight: field.style.fontWeight ?? "bold",
+            color: field.style.color ?? "#000",
+            textAlign: field.style.alignment ?? "left",
+          }}
+        >
+          {field.content}
+        </h1>
+      );
     case "description":
-      return (
-        <p className="leading-relaxed text-center" style={commonStyles}>
-          {field.content}
-        </p>
-      );
+      return <p className="leading-relaxed text-center">{field.content}</p>;
     case "username":
-      return (
-        <div className="italic text-end" style={commonStyles}>
-          {field.content}
-        </div>
-      );
+      return <div className="italic text-end">{field.content}</div>;
     case "code":
       return (
         <div className="bg-[#001524] p-4 rounded-lg shadow-inner text-left text-white">
@@ -35,14 +32,7 @@ const RenderField: React.FC<{ field: IField; type: IField["type"] }> = ({
             <span className="w-3 h-3 bg-green-500 rounded-full block"></span>
           </div>
           <hr className="border-gray-300 my-4" />
-          <pre
-            style={{
-              ...commonStyles,
-              color: "#fff",
-              whiteSpace: "pre-wrap",
-              wordBreak: "break-all",
-            }}
-          >
+          <pre className="whitespace-pre-wrap word-break-break-all text-base text-white">
             <code>{field.content}</code>
           </pre>
         </div>
@@ -55,8 +45,6 @@ const RenderField: React.FC<{ field: IField; type: IField["type"] }> = ({
 
 export const FieldRenderer: React.FC<{ field: IField }> = ({ field }) => {
   return (
-    <div className="mb-6 w-4/5">
-      {RenderField({ field, type: field.type })}
-    </div>
+    <div className="mb-6 w-4/5">{RenderField({ field, type: field.type })}</div>
   );
 };

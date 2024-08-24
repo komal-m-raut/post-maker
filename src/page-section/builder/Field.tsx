@@ -9,11 +9,38 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { IField } from "@/types/builder";
 import { contentBlocks } from "@/util/constants";
-import React from "react";
+import React, { useState } from "react";
+import { FontSizeSlider, FontWeightSlider } from "./StyleControllers";
+
+type StyleType = "fontSize" | "fontWeight" | "color" | "alignment";
+
+const getStyleBlock = (
+  styleOptions: {
+    styleType: "fontSize" | "fontWeight" | "color" | "alignment";
+    updateStyle: (value: string | number) => void;
+  }[]
+) => {
+  return (
+    <div className="my-4 flex flex-col gap-y-4">
+      {styleOptions.map((styleOption) => {
+        switch (styleOption.styleType) {
+          case "fontSize":
+            return <FontSizeSlider updateStyle={styleOption.updateStyle} />;
+          case "fontWeight":
+            return <FontWeightSlider updateStyle={styleOption.updateStyle} />;
+          default:
+            return null;
+        }
+      })}
+    </div>
+  );
+};
 
 const getBlock = (
   type: IField["type"],
-  updateField: (field: IField) => void
+  updateField: (field: IField) => void,
+  updateStyleState: (styleType: StyleType, value: string | number) => void,
+  customStyles: IField["style"]
 ) => {
   switch (type) {
     case "title":
@@ -27,14 +54,32 @@ const getBlock = (
               updateField({
                 type: "title",
                 content: e.target.value,
-                style: {
-                  fontSize: "16px",
-                  fontWeight: "bold",
-                  color: "#000",
-                },
+                style: customStyles,
               });
             }}
           />
+          {getStyleBlock([
+            {
+              styleType: "fontSize",
+              updateStyle: (value) =>
+                updateStyleState("fontSize", value as number),
+            },
+            {
+              styleType: "fontWeight",
+              updateStyle: (value) =>
+                updateStyleState("fontWeight", value as number),
+            },
+            {
+              styleType: "color",
+              updateStyle: (value) =>
+                updateStyleState("color", value as string),
+            },
+            {
+              styleType: "alignment",
+              updateStyle: (value) =>
+                updateStyleState("alignment", value as StyleType),
+            },
+          ])}
         </div>
       );
 
@@ -105,12 +150,20 @@ const getBlock = (
 };
 
 const Field: React.FC<IField & { updateField: (field: IField) => void }> = ({
-  type,
-  content,
   style,
+  content,
+  type,
   updateField,
 }) => {
-  const [fieldType, setFieldType] = React.useState(type);
+  const [fieldType, setFieldType] = useState(type);
+  const updateStyleState = (styleType: StyleType, value: string | number) => {
+    updateField({
+      type: fieldType,
+      content,
+      style: { ...style, [styleType]: value },
+    });
+  };
+
   return (
     <div className="p-4 border border-gray-300 rounded">
       <Select onValueChange={(type: IField["type"]) => setFieldType(type)}>
@@ -125,7 +178,7 @@ const Field: React.FC<IField & { updateField: (field: IField) => void }> = ({
           ))}
         </SelectContent>
       </Select>
-      {getBlock(fieldType, updateField)}
+      {getBlock(fieldType, updateField, updateStyleState, style)}
     </div>
   );
 };

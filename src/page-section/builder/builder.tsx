@@ -31,9 +31,10 @@ const Builder = () => {
                   type: "description",
                   content: "Hello world",
                   style: {
-                    fontSize: "16px",
-                    fontWeight: "normal",
-                    color: "#000",
+                    fontSize: undefined,
+                    fontWeight: undefined,
+                    color: undefined,
+                    alignment: "left",
                   },
                 },
               ])
