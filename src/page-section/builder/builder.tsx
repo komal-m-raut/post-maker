@@ -7,8 +7,19 @@ import Field from "./Field";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Builder = () => {
-  const [fields, setFields] = useState<IField[]>([]);
-  const [activeTab, setActiveTab] = useState<string>("");
+  const [fields, setFields] = useState<IField[]>([
+    {
+      type: "title",
+      content: "Hello world",
+      style: {
+        fontSize: undefined,
+        fontWeight: undefined,
+        color: undefined,
+        alignment: "center",
+      },
+    },
+  ]);
+  const [activeTab, setActiveTab] = useState<string>("tab-0");
 
   const updateField = (field: IField, index: number) => {
     setFields((prevFields) => {
@@ -55,7 +66,7 @@ const Builder = () => {
                     fontSize: undefined,
                     fontWeight: undefined,
                     color: undefined,
-                    alignment: "left",
+                    alignment: "center",
                   },
                 },
               ]);
@@ -94,6 +105,7 @@ const Builder = () => {
         )}
       </div>
       <Renderer fields={fields} />
+      
     </div>
   );
 };

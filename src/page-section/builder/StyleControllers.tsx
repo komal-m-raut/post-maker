@@ -86,7 +86,7 @@ export const AlignmentButtons = ({
   return (
 <div className="flex flex-col gap-2">
 <label className="text-sm text-slate-600">Align your content</label>      <RadioGroup
-        defaultValue="left"
+        defaultValue="center"
         onValueChange={(value: string) => updateStyle(value)}
       >
         <div className="flex space-x-4">
