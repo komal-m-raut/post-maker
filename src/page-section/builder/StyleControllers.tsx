@@ -54,7 +54,7 @@ export const AlignmentButtons = ({
 }) => {
   return (
     <RadioGroup
-      defaultValue="center"
+      defaultValue="left"
       onValueChange={(value: string) => updateStyle(value)}
     >
       <div className="flex space-x-4">

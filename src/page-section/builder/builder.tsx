@@ -4,27 +4,48 @@ import { IField } from "@/types/builder";
 import { Button } from "@/components/ui/button";
 import { Renderer } from "./renderer/Renderer";
 import Field from "./Field";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Builder = () => {
   const [fields, setFields] = useState<IField[]>([]);
+  const [activeTab, setActiveTab] = useState<string>("");
+
   const updateField = (field: IField, index: number) => {
     setFields((prevFields) => {
-      if (index === -1) {
-        return [...prevFields, field];
+      const updatedFields = [...prevFields];
+      updatedFields[index] = field;
+      return updatedFields;
+    });
+  };
+
+  const removeField = (index: number) => {
+    setFields((prevFields) => {
+      const updatedFields = prevFields.filter((_, i) => i !== index);
+      return updatedFields;
+    });
+    setActiveTab((prevActiveTab) => {
+      if (prevActiveTab === `tab-${index}`) {
+        if (index > 0) {
+          return `tab-${index - 1}`;
+        } else if (index < fields.length - 1) {
+          return `tab-${index + 1}`;
+        } else {
+          return "";
+        }
       }
-      prevFields[index] = field;
-      return [...prevFields];
+      return prevActiveTab;
     });
   };
 
   return (
-    <div className="flex justify-center items-center min-h-svh">
+    <div className="flex justify-center items-center min-h-screen">
       <div className="bg-slate-50 p-4 mr-4 min-w-96 h-auto shadow-lg">
         <div className="flex justify-between items-center w-full">
           <h1>Builder blocks</h1>
           <Button
             variant="outline"
-            onClick={() =>
+            onClick={() => {
+              const newIndex = fields.length;
               setFields((prev) => [
                 ...prev,
                 {
@@ -37,20 +58,40 @@ const Builder = () => {
                     alignment: "left",
                   },
                 },
-              ])
-            }
+              ]);
+              setActiveTab(`tab-${newIndex}`); // Automatically set the new tab as active
+            }}
           >
             Add block
           </Button>
         </div>
-        {fields.map((field, index) => (
-          <div key={index} className="mt-4">
-            <Field
-              {...field}
-              updateField={(field) => updateField(field, index)}
-            />
-          </div>
-        ))}
+
+        {fields.length > 0 && (
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="w-[400px]"
+          >
+            <TabsList>
+              {fields.map((_, index) => (
+                <TabsTrigger key={`trigger-${index}`} value={`tab-${index}`}>
+                  Block {index + 1}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            {fields.map((field, index) => (
+              <TabsContent key={`content-${index}`} value={`tab-${index}`}>
+                <Field
+                  {...field}
+                  updateField={(updatedField) =>
+                    updateField(updatedField, index)
+                  }
+                  removeField={() => removeField(index)}
+                />
+              </TabsContent>
+            ))}
+          </Tabs>
+        )}
       </div>
       <Renderer fields={fields} />
     </div>

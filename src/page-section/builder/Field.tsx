@@ -16,6 +16,9 @@ import {
   FontSizeSlider,
   FontWeightSlider,
 } from "./StyleControllers";
+import { Button } from "@/components/ui/button";
+import { XIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type StyleType = "fontSize" | "fontWeight" | "color" | "alignment";
 
@@ -191,12 +194,11 @@ const getBlock = (
   }
 };
 
-const Field: React.FC<IField & { updateField: (field: IField) => void }> = ({
-  style,
-  content,
-  type,
-  updateField,
-}) => {
+const Field: React.FC<
+  IField & { updateField: (field: IField) => void } & {
+    removeField: (index: number) => void;
+  }
+> = ({ style, content, type, updateField, removeField }) => {
   const [fieldType, setFieldType] = useState(type);
   const updateStyleState = (styleType: StyleType, value: string | number) => {
     updateField({
@@ -208,18 +210,27 @@ const Field: React.FC<IField & { updateField: (field: IField) => void }> = ({
 
   return (
     <div className="p-4 border border-gray-300 rounded">
-      <Select onValueChange={(type: IField["type"]) => setFieldType(type)}>
-        <SelectTrigger className="min-w-[180px] mb-4">
-          <SelectValue placeholder="Select block" />
-        </SelectTrigger>
-        <SelectContent>
-          {contentBlocks.map((block) => (
-            <SelectItem key={block.value} value={block.value}>
-              {block.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <div className="flex gap-4">
+        <Select onValueChange={(type: IField["type"]) => setFieldType(type)}>
+          <SelectTrigger className="min-w-[180px] mb-4">
+            <SelectValue placeholder="Select block" />
+          </SelectTrigger>
+          <SelectContent>
+            {contentBlocks.map((block) => (
+              <SelectItem key={block.value} value={block.value}>
+                {block.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Button
+          variant="outline"
+          className={cn("bg-red-500 text-white")}
+          onClick={() => removeField(0)}
+        >
+          <XIcon size={20} />
+        </Button>
+      </div>
       {getBlock(fieldType, updateField, updateStyleState, style)}
     </div>
   );
