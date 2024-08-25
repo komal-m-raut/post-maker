@@ -30,6 +30,7 @@ const getStyleBlock = (
 ) => {
   return (
     <div className="my-4 flex flex-col gap-y-4">
+      <span className="font-bold">Customize your content here</span>
       {styleOptions.map((styleOption) => {
         switch (styleOption.styleType) {
           case "fontSize":
@@ -73,16 +74,6 @@ const getBlock = (
           />
           {getStyleBlock([
             {
-              styleType: "fontSize",
-              updateStyle: (value) =>
-                updateStyleState("fontSize", value as number),
-            },
-            {
-              styleType: "fontWeight",
-              updateStyle: (value) =>
-                updateStyleState("fontWeight", value as number),
-            },
-            {
               styleType: "color",
               updateStyle: (value) =>
                 updateStyleState("color", value as string),
@@ -91,6 +82,16 @@ const getBlock = (
               styleType: "alignment",
               updateStyle: (value) =>
                 updateStyleState("alignment", value as StyleType),
+            },
+            {
+              styleType: "fontSize",
+              updateStyle: (value) =>
+                updateStyleState("fontSize", value as number),
+            },
+            {
+              styleType: "fontWeight",
+              updateStyle: (value) =>
+                updateStyleState("fontWeight", value as number),
             },
           ])}
         </div>
@@ -112,16 +113,6 @@ const getBlock = (
           />
           {getStyleBlock([
             {
-              styleType: "fontSize",
-              updateStyle: (value) =>
-                updateStyleState("fontSize", value as number),
-            },
-            {
-              styleType: "fontWeight",
-              updateStyle: (value) =>
-                updateStyleState("fontWeight", value as number),
-            },
-            {
               styleType: "color",
               updateStyle: (value) =>
                 updateStyleState("color", value as string),
@@ -130,6 +121,16 @@ const getBlock = (
               styleType: "alignment",
               updateStyle: (value) =>
                 updateStyleState("alignment", value as StyleType),
+            },
+            {
+              styleType: "fontSize",
+              updateStyle: (value) =>
+                updateStyleState("fontSize", value as number),
+            },
+            {
+              styleType: "fontWeight",
+              updateStyle: (value) =>
+                updateStyleState("fontWeight", value as number),
             },
           ])}
         </div>
@@ -167,16 +168,6 @@ const getBlock = (
           />
           {getStyleBlock([
             {
-              styleType: "fontSize",
-              updateStyle: (value) =>
-                updateStyleState("fontSize", value as number),
-            },
-            {
-              styleType: "fontWeight",
-              updateStyle: (value) =>
-                updateStyleState("fontWeight", value as number),
-            },
-            {
               styleType: "color",
               updateStyle: (value) =>
                 updateStyleState("color", value as string),
@@ -185,6 +176,16 @@ const getBlock = (
               styleType: "alignment",
               updateStyle: (value) =>
                 updateStyleState("alignment", value as StyleType),
+            },
+            {
+              styleType: "fontSize",
+              updateStyle: (value) =>
+                updateStyleState("fontSize", value as number),
+            },
+            {
+              styleType: "fontWeight",
+              updateStyle: (value) =>
+                updateStyleState("fontWeight", value as number),
             },
           ])}
         </div>
