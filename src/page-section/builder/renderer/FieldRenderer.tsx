@@ -70,7 +70,7 @@ const RenderField: React.FC<{ field: IField; type: IField["type"] }> = ({
 
 export const FieldRenderer: React.FC<{ field: IField }> = ({ field }) => {
   return (
-    <div className="w-4/5">
+    <div className="w-full">
       {RenderField({ field, type: field.type })}
     </div>
   );
