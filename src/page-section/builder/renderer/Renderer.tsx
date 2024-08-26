@@ -1,3 +1,5 @@
+'use client'
+
 import { IField } from "@/types/builder";
 import React, { useId, useRef } from "react";
 import { FieldRenderer } from "./FieldRenderer";

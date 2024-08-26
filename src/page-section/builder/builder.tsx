@@ -1,15 +1,18 @@
 "use client";
+
 import React, { useState } from "react";
 import { IField } from "@/types/builder";
 import { Button } from "@/components/ui/button";
 import { Renderer } from "./renderer/Renderer";
 import Field from "./Field";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
+import { XIcon } from "lucide-react";
 
 const Builder = () => {
   const [fields, setFields] = useState<IField[]>([
     {
-      type: "title",
+      type: "description",
       content: "Hello world",
       style: {
         fontSize: undefined,
@@ -35,22 +38,21 @@ const Builder = () => {
       return updatedFields;
     });
     setActiveTab((prevActiveTab) => {
-      if (prevActiveTab === `tab-${index}`) {
-        if (index > 0) {
-          return `tab-${index - 1}`;
-        } else if (index < fields.length - 1) {
-          return `tab-${index + 1}`;
-        } else {
-          return "";
-        }
+      if (index === 0 && fields.length > 1) {
+        return `tab-0`;
+      } else if (index > 0 && index < fields.length - 1) {
+        return `tab-${index}`;
+      } else if (index === fields.length - 1 && fields.length > 1) {
+        return `tab-${index - 1}`;
+      } else {
+        return "";
       }
-      return prevActiveTab;
     });
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen">
-      <div className="bg-slate-50 p-4 mr-4 min-w-96 h-auto shadow-lg">
+      <div className="p-4 mr-4 min-w-96 h-auto shadow-xl">
         <div className="flex justify-between items-center w-full">
           <h1>Builder blocks</h1>
           <Button
@@ -61,7 +63,7 @@ const Builder = () => {
                 ...prev,
                 {
                   type: "description",
-                  content: "Hello world",
+                  content: "",
                   style: {
                     fontSize: undefined,
                     fontWeight: undefined,
@@ -76,36 +78,46 @@ const Builder = () => {
             Add block
           </Button>
         </div>
-
-        {fields.length > 0 && (
-          <Tabs
-            value={activeTab}
-            onValueChange={setActiveTab}
-            className="w-[400px]"
-          >
-            <TabsList>
-              {fields.map((_, index) => (
+        <Tabs
+          value={activeTab}
+          onValueChange={setActiveTab}
+          className="w-[400px] mt-6"
+        >
+          <TabsList>
+            {fields.map((_, index) => (
+              <div
+                key={`trigger-container-${index}`}
+                className="flex items-center"
+              >
                 <TabsTrigger key={`trigger-${index}`} value={`tab-${index}`}>
                   Block {index + 1}
                 </TabsTrigger>
-              ))}
-            </TabsList>
-            {fields.map((field, index) => (
-              <TabsContent key={`content-${index}`} value={`tab-${index}`}>
-                <Field
-                  {...field}
-                  updateField={(updatedField) =>
-                    updateField(updatedField, index)
-                  }
-                  removeField={() => removeField(index)}
-                />
-              </TabsContent>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className={cn("hover:bg-transparent")}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent switching to the tab when clicking the remove button
+                    removeField(index);
+                  }}
+                  disabled={fields.length === 1}
+                >
+                  <XIcon size={16} />
+                </Button>
+              </div>
             ))}
-          </Tabs>
-        )}
+          </TabsList>
+          {fields.map((field, index) => (
+            <TabsContent key={`content-${index}`} value={`tab-${index}`}>
+              <Field
+                {...field}
+                updateField={(updatedField) => updateField(updatedField, index)}
+              />
+            </TabsContent>
+          ))}
+        </Tabs>
       </div>
       <Renderer fields={fields} />
-      
     </div>
   );
 };

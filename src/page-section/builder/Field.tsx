@@ -1,3 +1,5 @@
+"use client";
+
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -54,7 +56,8 @@ const getBlock = (
   type: IField["type"],
   updateField: (field: IField) => void,
   updateStyleState: (styleType: StyleType, value: string | number) => void,
-  customStyles: IField["style"]
+  customStyles: IField["style"],
+  content: string
 ) => {
   switch (type) {
     case "title":
@@ -64,6 +67,7 @@ const getBlock = (
             type="text"
             placeholder="Enter title"
             className="w-full p-2 border border-gray-300 rounded"
+            value={content}
             onChange={(e) => {
               updateField({
                 type: "title",
@@ -103,6 +107,7 @@ const getBlock = (
           <Textarea
             placeholder="Enter description"
             className="w-full p-2 border border-gray-300 rounded"
+            value={content}
             onChange={(e) => {
               updateField({
                 type: "description",
@@ -141,6 +146,7 @@ const getBlock = (
           <Textarea
             placeholder="Enter code"
             className="w-full p-2 border border-gray-300 rounded"
+            value={content}
             onChange={(e) => {
               updateField({
                 type: "code",
@@ -157,6 +163,7 @@ const getBlock = (
           <Input
             type="text"
             placeholder="Enter username"
+            value={content}
             className="w-full p-2 border border-gray-300 rounded"
             onChange={(e) => {
               updateField({
@@ -195,11 +202,12 @@ const getBlock = (
   }
 };
 
-const Field: React.FC<
-  IField & { updateField: (field: IField) => void } & {
-    removeField: (index: number) => void;
-  }
-> = ({ style, content, type, updateField, removeField }) => {
+const Field: React.FC<IField & { updateField: (field: IField) => void }> = ({
+  style,
+  content,
+  type,
+  updateField,
+}) => {
   const [fieldType, setFieldType] = useState(type);
   const updateStyleState = (styleType: StyleType, value: string | number) => {
     updateField({
@@ -212,7 +220,10 @@ const Field: React.FC<
   return (
     <div className="p-4 border border-gray-300 rounded">
       <div className="flex gap-4">
-        <Select onValueChange={(type: IField["type"]) => setFieldType(type)}>
+        <Select
+          value={fieldType}
+          onValueChange={(type: IField["type"]) => setFieldType(type)}
+        >
           <SelectTrigger className="min-w-[180px] mb-4">
             <SelectValue placeholder="Select block" />
           </SelectTrigger>
@@ -224,15 +235,8 @@ const Field: React.FC<
             ))}
           </SelectContent>
         </Select>
-        <Button
-          variant="outline"
-          className={cn("bg-red-500 text-white")}
-          onClick={() => removeField(0)}
-        >
-          <XIcon size={20} />
-        </Button>
       </div>
-      {getBlock(fieldType, updateField, updateStyleState, style)}
+      {getBlock(fieldType, updateField, updateStyleState, style, content)}
     </div>
   );
 };
