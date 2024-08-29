@@ -5,16 +5,14 @@ import React, { useId, useRef, useState } from "react";
 import { FieldRenderer } from "./FieldRenderer";
 import { Button } from "@/components/ui/button";
 import { toPng } from "html-to-image";
-import Image from "next/image";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import {
-  Camera,
-  Instagram,
-  InstagramIcon,
-  Linkedin,
-  LinkedinIcon,
-} from "lucide-react";
+import { Instagram, Linkedin } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+const aspectRatios: Record<string, number> = {
+  linkedin: 1.91 / 1,
+  instagram: 4 / 3,
+};
 
 export const Renderer: React.FC<{ fields: IField[] }> = ({ fields }) => {
   const id = useId();
@@ -44,15 +42,23 @@ export const Renderer: React.FC<{ fields: IField[] }> = ({ fields }) => {
     <div className="p-4 w-1/3 h-auto shadow-xl">
       <div className="text-center mb-4">Aspect Ratio</div>
       <div className="flex justify-center gap-4 mb-4">
-        <Button onClick={() => setAspectRatio("linkedin")} size={"icon"} className={cn("bg-blue-500")}>
+        <Button
+          onClick={() => setAspectRatio("linkedin")}
+          size={"icon"}
+          className={cn("bg-blue-500")}
+        >
           <Linkedin />
         </Button>
-        <Button onClick={() => setAspectRatio("instagram")} size={"icon"} className={cn("bg-orange-700")}>
+        <Button
+          onClick={() => setAspectRatio("instagram")}
+          size={"icon"}
+          className={cn("bg-orange-700")}
+        >
           <Instagram size={24} />
         </Button>
       </div>
       <div ref={ref} className="flex flex-col items-center p-6 bg-green-50">
-        <AspectRatio ratio={aspectRatio === "linkedin" ? 1.91 / 1 : 4 / 3}>
+        <AspectRatio ratio={aspectRatios[aspectRatio]}>
           {fields.map((field) => (
             <FieldRenderer
               key={`${id}-${Math.random().toString(36)}`}

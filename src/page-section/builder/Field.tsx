@@ -18,10 +18,6 @@ import {
   FontSizeSlider,
   FontWeightSlider,
 } from "./StyleControllers";
-import { Button } from "@/components/ui/button";
-import { XIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-
 type StyleType = "fontSize" | "fontWeight" | "color" | "alignment";
 
 const getStyleBlock = (
@@ -208,10 +204,9 @@ const Field: React.FC<IField & { updateField: (field: IField) => void }> = ({
   type,
   updateField,
 }) => {
-  const [fieldType, setFieldType] = useState(type);
   const updateStyleState = (styleType: StyleType, value: string | number) => {
     updateField({
-      type: fieldType,
+      type,
       content,
       style: { ...style, [styleType]: value },
     });
@@ -221,8 +216,14 @@ const Field: React.FC<IField & { updateField: (field: IField) => void }> = ({
     <div className="p-4 border border-gray-300 rounded">
       <div className="flex gap-4">
         <Select
-          value={fieldType}
-          onValueChange={(type: IField["type"]) => setFieldType(type)}
+          value={type}
+          onValueChange={(selectedType: IField["type"]) =>
+            updateField({
+              type: selectedType,
+              content,
+              style,
+            })
+          }
         >
           <SelectTrigger className="min-w-[180px] mb-4">
             <SelectValue placeholder="Select block" />
@@ -236,7 +237,7 @@ const Field: React.FC<IField & { updateField: (field: IField) => void }> = ({
           </SelectContent>
         </Select>
       </div>
-      {getBlock(fieldType, updateField, updateStyleState, style, content)}
+      {getBlock(type, updateField, updateStyleState, style, content)}
     </div>
   );
 };
