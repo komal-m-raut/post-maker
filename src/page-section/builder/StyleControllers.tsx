@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { cn } from "@/lib/utils";
 import { Slider } from "@/components/ui/slider";
@@ -86,8 +86,9 @@ export const AlignmentButtons = ({
   updateStyle: (alignment: string) => void;
 }) => {
   return (
-<div className="flex flex-col gap-2">
-<label className="text-sm text-slate-600">Align your content</label>      <RadioGroup
+    <div className="flex flex-col gap-2">
+      <label className="text-sm text-slate-600">Align your content</label>{" "}
+      <RadioGroup
         defaultValue="center"
         onValueChange={(value: string) => updateStyle(value)}
       >

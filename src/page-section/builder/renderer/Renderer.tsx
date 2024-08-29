@@ -14,7 +14,10 @@ const aspectRatios: Record<string, number> = {
   instagram: 4 / 3,
 };
 
-export const Renderer: React.FC<{ fields: IField[] }> = ({ fields }) => {
+export const Renderer: React.FC<{
+  fields: IField[];
+  backgroundImage: string;
+}> = ({ fields, backgroundImage }) => {
   const id = useId();
   const ref = useRef<HTMLDivElement>(null);
   const [aspectRatio, setAspectRatio] = useState("instagram"); // Default to Instagram
@@ -57,7 +60,15 @@ export const Renderer: React.FC<{ fields: IField[] }> = ({ fields }) => {
           <Instagram size={24} />
         </Button>
       </div>
-      <div ref={ref} className="flex flex-col items-center p-6 bg-green-50">
+      <div
+        ref={ref}
+        className="flex flex-col items-center p-6"
+        style={{
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
         <AspectRatio ratio={aspectRatios[aspectRatio]}>
           {fields.map((field) => (
             <FieldRenderer
