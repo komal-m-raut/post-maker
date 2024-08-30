@@ -11,13 +11,15 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { IField } from "@/types/builder";
 import { contentBlocks } from "@/util/constants";
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import {
   AlignmentButtons,
   ColorPicker,
   FontSizeSlider,
   FontWeightSlider,
 } from "./StyleControllers";
+import { Editor } from "@monaco-editor/react";
+
 type StyleType = "fontSize" | "fontWeight" | "color" | "alignment";
 
 const getStyleBlock = (
@@ -136,23 +138,38 @@ const getBlock = (
           ])}
         </div>
       );
+
     case "code":
       return (
-        <div className="mb-4">
-          <Textarea
-            placeholder="Enter code"
-            className="w-full p-2 border border-gray-300 rounded"
+        <div className="flex items-center gap-4 mb-4 p-2 font-semibold text-xl text-green-900">
+          <Editor
+            height="300px"
+            defaultValue="<h1>Hello, World!</h1>"
+            language="javascript"
+            theme="vs-dark"
             value={content}
-            onChange={(e) => {
+            onChange={(value) => {
               updateField({
                 type: "code",
-                content: e.target.value,
+                content: value || "",
                 style: customStyles,
               });
+            }}
+            options={{
+              inlineSuggest: { enabled: true },
+              fontSize: 14,
+              formatOnType: true,
+              autoClosingBrackets: "always",
+              minimap: { enabled: false },
+              lineNumbersMinChars: 1,
+              tabSize: 2,
+              cursorBlinking: "blink",
+              matchBrackets: "always",
             }}
           />
         </div>
       );
+
     case "username":
       return (
         <div className="mb-4">
