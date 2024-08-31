@@ -17,7 +17,7 @@ const RenderField: React.FC<{ field: IField; type: IField["type"] }> = ({
             color: field.style.color ?? "#000",
             textAlign: field.style.alignment ?? "left",
           }}
-          className="my-4"
+          className="my-2"
         >
           {field.content}
         </h1>
@@ -31,7 +31,7 @@ const RenderField: React.FC<{ field: IField; type: IField["type"] }> = ({
             color: field.style.color ?? "#000",
             textAlign: field.style.alignment ?? "left",
           }}
-          className="my-4"
+          className="my-2"
         >
           {field.content}
         </p>
@@ -39,7 +39,7 @@ const RenderField: React.FC<{ field: IField; type: IField["type"] }> = ({
     case "username":
       return (
         <div
-          className="italic my-4"
+          className="italic my-2"
           style={{
             fontSize: field.style.fontSize + "px" ?? "1rem",
             fontWeight: field.style.fontWeight ?? "bold",
@@ -63,8 +63,11 @@ const RenderField: React.FC<{ field: IField; type: IField["type"] }> = ({
             language="jsx"
             showLineNumbers
             style={dracula}
-            customStyle={{ 
-              fontSize: "14px", lineHeight: "1.5" }}
+            customStyle={{
+              fontSize: "14px",
+              lineHeight: "1.5",
+              overflow: "hidden", // Prevent scrolling
+            }}
           >
             {field.content}
           </SyntaxHighlighter>
