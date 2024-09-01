@@ -21,13 +21,16 @@ export const Renderer: React.FC<{
   const id = useId();
   const ref = useRef<HTMLDivElement>(null);
   const [aspectRatio, setAspectRatio] = useState("instagram"); // Default to Instagram
+  const [isLoading, setIsLoading] = useState(false); // Loading state
 
   const downloadPNG = () => {
     if (ref.current === null) {
       return;
     }
 
-    toPng(ref.current, { pixelRatio: 20 }) // Increase pixel ratio for higher quality
+    setIsLoading(true); // Set loading state to true
+
+    toPng(ref.current, { pixelRatio: 20, cacheBust: false }) // Increase pixel ratio for higher quality
       .then((dataUrl) => {
         const link = document.createElement("a");
         link.href = dataUrl;
@@ -38,6 +41,9 @@ export const Renderer: React.FC<{
       })
       .catch((err) => {
         console.error("Failed to convert to PNG", err);
+      })
+      .finally(() => {
+        setIsLoading(false); // Set loading state to false
       });
   };
 
@@ -62,7 +68,7 @@ export const Renderer: React.FC<{
       </div>
       <div
         ref={ref}
-        className="flex flex-col items-center p-6"
+        className="flex flex-col items-center p-4"
         style={{
           backgroundImage: `url(${backgroundImage})`,
           backgroundSize: "cover",
@@ -79,7 +85,9 @@ export const Renderer: React.FC<{
         </AspectRatio>
       </div>
       <div className="flex justify-center mt-4">
-        <Button onClick={downloadPNG}>Download</Button>
+        <Button onClick={downloadPNG} disabled={isLoading}>
+          {isLoading ? "Loading..." : "Download"}
+        </Button>
       </div>
     </div>
   );

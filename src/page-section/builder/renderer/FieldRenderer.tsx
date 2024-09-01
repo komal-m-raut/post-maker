@@ -1,5 +1,7 @@
 import { IField } from "@/types/builder";
 import React from "react";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 const RenderField: React.FC<{ field: IField; type: IField["type"] }> = ({
   field,
@@ -15,7 +17,7 @@ const RenderField: React.FC<{ field: IField; type: IField["type"] }> = ({
             color: field.style.color ?? "#000",
             textAlign: field.style.alignment ?? "left",
           }}
-          className="my-4"
+          className="my-2"
         >
           {field.content}
         </h1>
@@ -29,7 +31,7 @@ const RenderField: React.FC<{ field: IField; type: IField["type"] }> = ({
             color: field.style.color ?? "#000",
             textAlign: field.style.alignment ?? "left",
           }}
-          className="my-4"
+          className="my-2"
         >
           {field.content}
         </p>
@@ -37,7 +39,7 @@ const RenderField: React.FC<{ field: IField; type: IField["type"] }> = ({
     case "username":
       return (
         <div
-          className="italic my-4"
+          className="italic my-2"
           style={{
             fontSize: field.style.fontSize + "px" ?? "1rem",
             fontWeight: field.style.fontWeight ?? "bold",
@@ -57,9 +59,18 @@ const RenderField: React.FC<{ field: IField; type: IField["type"] }> = ({
             <span className="w-3 h-3 bg-green-500 rounded-full block"></span>
           </div>
           <hr className="border-gray-300 my-4" />
-          <pre className="whitespace-pre-wrap word-break-break-all text-base text-white">
-            <code>{field.content}</code>
-          </pre>
+          <SyntaxHighlighter
+            language="jsx"
+            showLineNumbers
+            style={dracula}
+            customStyle={{
+              fontSize: "14px",
+              lineHeight: "1.5",
+              overflow: "hidden", // Prevent scrolling
+            }}
+          >
+            {field.content}
+          </SyntaxHighlighter>
         </div>
       );
 
@@ -70,8 +81,6 @@ const RenderField: React.FC<{ field: IField; type: IField["type"] }> = ({
 
 export const FieldRenderer: React.FC<{ field: IField }> = ({ field }) => {
   return (
-    <div className="w-full">
-      {RenderField({ field, type: field.type })}
-    </div>
+    <div className="w-full">{RenderField({ field, type: field.type })}</div>
   );
 };
