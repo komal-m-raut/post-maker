@@ -1,12 +1,12 @@
 "use client";
 
 import { IField } from "@/types/builder";
-import React, { useId, useRef, useState } from "react";
+import React, { useId, useRef, useState, useEffect, useMemo } from "react";
 import { FieldRenderer } from "./FieldRenderer";
 import { Button } from "@/components/ui/button";
 import { toPng } from "html-to-image";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Instagram, Linkedin } from "lucide-react";
+import { Instagram, Linkedin, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const aspectRatios: Record<string, number> = {
@@ -18,7 +18,6 @@ export const Renderer: React.FC<{
   fields: IField[];
   backgroundImage: string;
 }> = ({ fields, backgroundImage }) => {
-  const id = useId();
   const ref = useRef<HTMLDivElement>(null);
   const [aspectRatio, setAspectRatio] = useState("instagram"); // Default to Instagram
   const [isLoading, setIsLoading] = useState(false); // Loading state
@@ -43,9 +42,16 @@ export const Renderer: React.FC<{
         console.error("Failed to convert to PNG", err);
       })
       .finally(() => {
+        console.log("Setting isLoading to false");
         setIsLoading(false); // Set loading state to false
       });
   };
+
+  const memoizedFields = useMemo(() => {
+    return fields.map((field, index) => (
+      <FieldRenderer key={index} field={field} />
+    ));
+  }, [fields]);
 
   return (
     <div className="p-4 w-1/3 h-auto shadow-xl">
@@ -76,17 +82,12 @@ export const Renderer: React.FC<{
         }}
       >
         <AspectRatio ratio={aspectRatios[aspectRatio]}>
-          {fields.map((field) => (
-            <FieldRenderer
-              key={`${id}-${Math.random().toString(36)}`}
-              field={field}
-            />
-          ))}
+          {memoizedFields}
         </AspectRatio>
       </div>
       <div className="flex justify-center mt-4">
         <Button onClick={downloadPNG} disabled={isLoading}>
-          {isLoading ? "Loading..." : "Download"}
+          {isLoading ? <Loader2 className="animate-spin" /> : "Download"}
         </Button>
       </div>
     </div>
