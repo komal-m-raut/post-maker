@@ -24,7 +24,7 @@ const Builder = () => {
     },
   ]);
   const [backgroundImage, setBackgroundImage] = useState<string>(
-    "https://img.freepik.com/free-vector/prickly-juniper-branch-beige-gray-minimal-background_53876-113047.jpg?t=st=1724917596~exp=1724921196~hmac=dfe444868a837eca82b711354d24251d758177af903a91fa4b728b3ce2c86b90&w=2000"
+    "https://picsum.photos/400/300"
   );
   const [activeTab, setActiveTab] = useState<string>("tab-0");
 
@@ -46,13 +46,15 @@ const Builder = () => {
       const updatedFields = prevFields.filter((_, i) => i !== index);
       return updatedFields;
     });
-    setActiveTab((prevActiveTab) => {
-      if (index === 0 && fields.length > 1) {
-        return `tab-0`;
-      } else if (index > 0 && index < fields.length - 1) {
-        return `tab-${index}`;
-      } else if (index === fields.length - 1 && fields.length > 1) {
-        return `tab-${index - 1}`;
+    setActiveTab(() => {
+      if (fields.length > 1) {
+        if (index === 0) {
+          return `tab-0`;
+        } else if (index < fields.length - 1) {
+          return `tab-${index}`;
+        } else {
+          return `tab-${index - 1}`;
+        }
       } else {
         return "";
       }
@@ -61,82 +63,87 @@ const Builder = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen">
-      <div>
-        <div className="p-4 mr-4 min-w-96 h-auto shadow-md mb-4">
-          <Template
-            assignTemplate={assignTemplate}
-            backgroundImage={backgroundImage}
-          />
-        </div>
-        <div className="p-4 mr-4 min-w-96 h-auto shadow-xl">
-          <div className="flex justify-between items-center w-full">
-            <h1>Builder blocks</h1>
-            <Button
-              variant="outline"
-              onClick={() => {
-                const newIndex = fields.length;
-                setFields((prev) => [
-                  ...prev,
-                  {
-                    type: "description",
-                    content: "",
-                    style: {
-                      fontSize: undefined,
-                      fontWeight: undefined,
-                      color: undefined,
-                      alignment: "center",
-                    },
-                  },
-                ]);
-                setActiveTab(`tab-${newIndex}`); // Automatically set the new tab as active
-              }}
-            >
-              Add block
-            </Button>
+      <div className="flex gap-4 flex-col-reverse md:flex-row w-full p-6 md:px-12 justify-center">
+        <div className="w-full md:min-w-96 md:max-w-[40vw]">
+          <div className="p-4 h-auto shadow-md mb-4">
+            <Template
+              assignTemplate={assignTemplate}
+              backgroundImage={backgroundImage}
+            />
           </div>
-          <Tabs
-            value={activeTab}
-            onValueChange={setActiveTab}
-            className="w-[400px] mt-6"
-          >
-            <TabsList>
-              {fields.map((_, index) => (
-                <div
-                  key={`trigger-container-${index}`}
-                  className="flex items-center"
-                >
-                  <TabsTrigger key={`trigger-${index}`} value={`tab-${index}`}>
-                    Block {index + 1}
-                  </TabsTrigger>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className={cn("hover:bg-transparent")}
-                    onClick={(e) => {
-                      e.stopPropagation(); // Prevent switching to the tab when clicking the remove button
-                      removeField(index);
-                    }}
-                    disabled={fields.length === 1}
+          <div className="p-4 h-auto shadow-xl">
+            <div className="flex justify-between items-center w-full">
+              <h1>Builder blocks</h1>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  const newIndex = fields.length;
+                  setFields((prev) => [
+                    ...prev,
+                    {
+                      type: "description",
+                      content: "",
+                      style: {
+                        fontSize: undefined,
+                        fontWeight: undefined,
+                        color: undefined,
+                        alignment: "center",
+                      },
+                    },
+                  ]);
+                  setActiveTab(`tab-${newIndex}`); // Automatically set the new tab as active
+                }}
+              >
+                Add block
+              </Button>
+            </div>
+            <Tabs
+              value={activeTab}
+              onValueChange={setActiveTab}
+              className="w-full mt-6"
+            >
+              <TabsList>
+                {fields.map((_, index) => (
+                  <div
+                    key={`trigger-container-${index}`}
+                    className="flex items-center"
                   >
-                    <XIcon size={16} />
-                  </Button>
-                </div>
+                    <TabsTrigger
+                      key={`trigger-${index}`}
+                      value={`tab-${index}`}
+                    >
+                      Block {index + 1}
+                    </TabsTrigger>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className={cn("hover:bg-transparent")}
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent switching to the tab when clicking the remove button
+                        removeField(index);
+                      }}
+                      disabled={fields.length === 1}
+                    >
+                      <XIcon size={16} />
+                    </Button>
+                  </div>
+                ))}
+              </TabsList>
+              {fields.map((field, index) => (
+                <TabsContent key={`content-${index}`} value={`tab-${index}`}>
+                  <Field
+                    {...field}
+                    updateField={(updatedField) =>
+                      updateField(updatedField, index)
+                    }
+                  />
+                </TabsContent>
               ))}
-            </TabsList>
-            {fields.map((field, index) => (
-              <TabsContent key={`content-${index}`} value={`tab-${index}`}>
-                <Field
-                  {...field}
-                  updateField={(updatedField) =>
-                    updateField(updatedField, index)
-                  }
-                />
-              </TabsContent>
-            ))}
-          </Tabs>
+            </Tabs>
+          </div>
         </div>
+        <Renderer fields={fields} backgroundImage={backgroundImage} />
       </div>
-      <Renderer fields={fields} backgroundImage={backgroundImage} />
     </div>
   );
 };

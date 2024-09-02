@@ -52,7 +52,7 @@ const RenderField: React.FC<{ field: IField; type: IField["type"] }> = ({
       );
     case "code":
       return (
-        <div className="bg-[#001524] p-4 rounded-lg shadow-inner text-left text-white my-4">
+        <div className="bg-[#001524] p-4 rounded-lg shadow-inner text-left text-white my-4 overflow-auto">
           <div className="flex space-x-2 mb-4">
             <span className="w-3 h-3 bg-red-500 rounded-full block"></span>
             <span className="w-3 h-3 bg-yellow-400 rounded-full block"></span>
@@ -66,7 +66,7 @@ const RenderField: React.FC<{ field: IField; type: IField["type"] }> = ({
             customStyle={{
               fontSize: "14px",
               lineHeight: "1.5",
-              overflow: "hidden", // Prevent scrolling
+              overflow: "auto",
             }}
           >
             {field.content}

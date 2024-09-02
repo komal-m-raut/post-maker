@@ -1,7 +1,7 @@
 "use client";
 
 import { IField } from "@/types/builder";
-import React, { useId, useRef, useState } from "react";
+import React, { useId, useRef, useState, useEffect } from "react";
 import { FieldRenderer } from "./FieldRenderer";
 import { Button } from "@/components/ui/button";
 import { toPng } from "html-to-image";
@@ -22,6 +22,24 @@ export const Renderer: React.FC<{
   const ref = useRef<HTMLDivElement>(null);
   const [aspectRatio, setAspectRatio] = useState("instagram"); // Default to Instagram
   const [isLoading, setIsLoading] = useState(false); // Loading state
+  const [backgroundDataUrl, setBackgroundDataUrl] = useState<string>("");
+
+  useEffect(() => {
+    // Convert background image to data URL
+    const img = new Image();
+    img.crossOrigin = "Anonymous";
+    img.src = backgroundImage;
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.drawImage(img, 0, 0);
+        setBackgroundDataUrl(canvas.toDataURL("image/png"));
+      }
+    };
+  }, [backgroundImage]);
 
   const downloadPNG = () => {
     if (ref.current === null) {
@@ -30,7 +48,7 @@ export const Renderer: React.FC<{
 
     setIsLoading(true); // Set loading state to true
 
-    toPng(ref.current, { pixelRatio: 20, cacheBust: false }) // Increase pixel ratio for higher quality
+    toPng(ref.current, { pixelRatio: 2, cacheBust: false }) // Increase pixel ratio for higher quality
       .then((dataUrl) => {
         const link = document.createElement("a");
         link.href = dataUrl;
@@ -48,7 +66,7 @@ export const Renderer: React.FC<{
   };
 
   return (
-    <div className="p-4 w-1/3 h-auto shadow-xl">
+    <div className="p-4 w-full md:max-w-[40vw] h-auto shadow-xl flex flex-col justify-between">
       <div className="text-center mb-4">Aspect Ratio</div>
       <div className="flex justify-center gap-4 mb-4">
         <Button
@@ -70,12 +88,15 @@ export const Renderer: React.FC<{
         ref={ref}
         className="flex flex-col items-center p-4"
         style={{
-          backgroundImage: `url(${backgroundImage})`,
+          backgroundImage: `url(${backgroundDataUrl})`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
         }}
       >
-        <AspectRatio ratio={aspectRatios[aspectRatio]}>
+        <AspectRatio
+          ratio={aspectRatios[aspectRatio]}
+          className="overflow-hidden"
+        >
           {fields.map((field) => (
             <FieldRenderer
               key={`${id}-${Math.random().toString(36)}`}
