@@ -1,7 +1,7 @@
 "use client";
 
 import { IField } from "@/types/builder";
-import React, { useId, useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { FieldRenderer } from "./FieldRenderer";
 import { Button } from "@/components/ui/button";
 import { toPng } from "html-to-image";
@@ -18,7 +18,6 @@ export const Renderer: React.FC<{
   fields: IField[];
   backgroundImage: string;
 }> = ({ fields, backgroundImage }) => {
-  const id = useId();
   const ref = useRef<HTMLDivElement>(null);
   const [aspectRatio, setAspectRatio] = useState("instagram"); // Default to Instagram
   const [isLoading, setIsLoading] = useState(false); // Loading state
@@ -97,11 +96,8 @@ export const Renderer: React.FC<{
           ratio={aspectRatios[aspectRatio]}
           className="overflow-hidden"
         >
-          {fields.map((field) => (
-            <FieldRenderer
-              key={`${id}-${Math.random().toString(36)}`}
-              field={field}
-            />
+          {fields.map((field, index) => (
+            <FieldRenderer key={index} field={field} />
           ))}
         </AspectRatio>
       </div>
