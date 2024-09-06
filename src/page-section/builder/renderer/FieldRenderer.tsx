@@ -3,9 +3,10 @@ import React from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 
-const RenderField: React.FC<{ field: IField; type: IField["type"] }> = ({
+const RenderField: React.FC<{ field: IField; type: IField["type"]; aspectRatio: String }> = ({
   field,
   type,
+  aspectRatio,
 }) => {
   switch (type) {
     case "title":
@@ -64,7 +65,7 @@ const RenderField: React.FC<{ field: IField; type: IField["type"] }> = ({
             showLineNumbers
             style={dracula}
             customStyle={{
-              fontSize: "14px",
+              fontSize: aspectRatio === "linkedin" ? "12px" : "14px",  
               lineHeight: "1.5",
               overflow: "auto",
             }}
@@ -79,8 +80,11 @@ const RenderField: React.FC<{ field: IField; type: IField["type"] }> = ({
   }
 };
 
-export const FieldRenderer: React.FC<{ field: IField }> = ({ field }) => {
+export const FieldRenderer: React.FC<{
+  field: IField;
+  aspectRatio: string;
+}> = ({ field, aspectRatio }) => {
   return (
-    <div className="w-full">{RenderField({ field, type: field.type })}</div>
+    <div className="w-full">{RenderField({ field, type: field.type, aspectRatio })}</div>
   );
 };

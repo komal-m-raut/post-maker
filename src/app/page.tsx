@@ -5,7 +5,7 @@ export const metadata = {
   description: "A simple builder",
   authors: [
     {
-      name: "Komal Vedavrat Patwardhan",
+      name: "Komal Raut",
       url: "https://github.com/komal-m-raut",
     },
   ],

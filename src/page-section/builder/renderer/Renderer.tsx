@@ -10,7 +10,7 @@ import { Instagram, Linkedin } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const aspectRatios: Record<string, number> = {
-  linkedin: 1.91 / 1,
+  linkedin: 3 / 2,
   instagram: 4 / 3,
 };
 
@@ -47,7 +47,7 @@ export const Renderer: React.FC<{
 
     setIsLoading(true); // Set loading state to true
 
-    toPng(ref.current, { pixelRatio: 2, cacheBust: false }) // Increase pixel ratio for higher quality
+    toPng(ref.current, { pixelRatio: 5, cacheBust: false }) // Increase pixel ratio for higher quality
       .then((dataUrl) => {
         const link = document.createElement("a");
         link.href = dataUrl;
@@ -97,7 +97,7 @@ export const Renderer: React.FC<{
           className="overflow-hidden"
         >
           {fields.map((field, index) => (
-            <FieldRenderer key={index} field={field} />
+            <FieldRenderer key={index} field={field} aspectRatio={aspectRatio}/>
           ))}
         </AspectRatio>
       </div>
