@@ -1,8 +1,37 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## About the Project
+
+- This project is a simple post generator which can generate posts for Instagram and LinkedIn.
+- It has a code editor to add code snippets.
+- You can download the generated images.
+- The project uses Tailwind CSS and Shadcn for styling.
+- The Monaco Editor is used for the code editor functionality.
+
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository:
+```sh
+git clone <repository-url>
+```
+
+2. Navigate to the project directory:
+
+```bash 
+cd <project-directory>
+```
+
+3. Install the dependencies
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+4. Start the development server:
 
 ```bash
 npm run dev
@@ -19,6 +48,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+
+
 
 ## Learn More
 
